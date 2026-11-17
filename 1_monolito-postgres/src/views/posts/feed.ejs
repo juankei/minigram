@@ -1,0 +1,9 @@
+
+<%- include('../partials/main') %>
+<main>
+   <ul>
+      <% posts.forEach(function(post) { %>
+    <%- include('post/post', { post: post }) %>
+  <% }); %>
+</ul>
+</main>

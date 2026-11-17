@@ -1,0 +1,102 @@
+<li>
+    <p><strong>Usuario:</strong> <%= post.username %></p>
+    <p><strong>Caption:</strong> <%= post.caption %></p>
+    <% if (post.image_filename) { %>
+        <img src="/uploads/<%= post.image_filename %>" alt="Imagen del post" style="max-width: 200px">
+    <% } %>
+    
+    <!-- LIKES DINÁMICOS -->
+    <p>
+        <strong>Likes:</strong> <span id="likes-count-<%= post.id %>"><%= post.likes %></span>
+        <button type="button" onclick="toggleLike('<%= post.id %>')" id="like-btn-<%= post.id %>" style="margin-left: 10px; cursor: pointer;">
+            <%= post.hasLiked ? 'Quitar like' : 'Dar like' %>
+        </button>
+    </p>
+
+    <% if (locals.username === post.username) { %>
+        <a href="/posts/delete-post/<%= post.id %>">Eliminar post</a>
+    <% } %>
+
+    <!-- COMENTARIOS DINÁMICOS -->
+    <div>
+        <p><strong>Comentarios:</strong></p>
+        
+        <ul id="comments-list-<%= post.id %>">
+            <% post.comments.forEach(comment => { %>
+                <li id="comment-<%= comment.id %>">
+                    <small><strong><%= comment.username %>:</strong> <%= comment.comment %></small>
+                    <% if (locals.username === comment.username) { %>
+                        <button onclick="deleteComment('<%= comment.id %>')" style="color: red; border:none; background:none; cursor:pointer; font-size: 0.8rem;">[Eliminar]</button>
+                    <% } %>
+                </li>
+            <% }) %>
+        </ul>
+
+        <!-- Formulario de comentarios con AJAX -->
+    <!-- Formulario de comentarios con AJAX -->
+        <form onsubmit="event.preventDefault(); submitComment('<%= post.id %>');">
+            <input type="text" id="comment-input-<%= post.id %>" placeholder="Escribe un comentario..." required style="width: 70%;">
+            <button type="submit">Comentar</button>
+        </form>
+    </div>
+</li>
+
+<!-- SCRIPT DE INTERACTIVIDAD -->
+<script>
+async function toggleLike(postId) {
+    try {
+        const response = await fetch(`/likes/switchLike/${postId}`);
+        const data = await response.json();
+        
+        // Actualizamos el número de likes
+        document.getElementById(`likes-count-${postId}`).innerText = data.newLikesCount;
+        
+        // Actualizamos el texto del botón
+        const btn = document.getElementById(`like-btn-${postId}`);
+        btn.innerText = data.hasLiked ? 'Quitar like' : 'Dar like';
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
+
+async function submitComment(postId) {
+    const input = document.getElementById(`comment-input-${postId}`);
+    const commentText = input.value;
+    if (!commentText.trim()) return;
+
+    try {
+        const response = await fetch(`/comments/create/${postId}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ comment: commentText })
+        });
+
+        if (response.ok) {
+            const newComment = await response.json(); // Asegúrate de que tu ruta /comments/create devuelva el comentario creado en JSON
+            
+            // Añadimos el comentario al DOM visualmente sin recargar
+            const list = document.getElementById(`comments-list-${postId}`);
+            const li = document.createElement('li');
+            li.id = `comment-${newComment.id}`;
+            li.innerHTML = `<small><strong>${newComment.username}:</strong> ${newComment.comment}</small> <button onclick="deleteComment('${newComment.id}')" style="color: red; border:none; background:none; cursor:pointer; font-size: 0.8rem;">[Eliminar]</button>`;
+            list.appendChild(li);
+            
+            input.value = ''; // Limpiar input
+        }
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
+
+async function deleteComment(commentId) {
+    try {
+        const response = await fetch(`/comments/delete/${commentId}`);
+        if (response.ok) {
+            // Removemos el elemento del DOM de forma instantánea
+            document.getElementById(`comment-${commentId}`).remove();
+        }
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
+</script>
