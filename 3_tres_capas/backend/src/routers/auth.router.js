@@ -18,10 +18,10 @@ const authrouter = Router()
 authrouter.get('/register', (req, res) => {
     res.render('auth/register')
 })
-/*
+
 authrouter.get('/login', (req, res) => {
     res.render('auth/login')
-})*/
+})
 
 authrouter.post('/register', register);
 authrouter.post('/login', login);

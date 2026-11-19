@@ -8,6 +8,8 @@ Minigram es una red social de fotos inspirada en Instagram, construida con una a
 
 Los usuarios pueden iniciar sesión, ver un feed de publicaciones con imagen y descripción, dar "me gusta" y comentar las publicaciones.
 
+**Documentación por capa:** [Frontend](fronted/README.md) · [Backend](backend/README.md) · [Base de datos](bbdd/README.md)
+
 ---
 
 ## Arquitectura
@@ -302,7 +304,82 @@ users (id, username, email, password, avatar_filename, created_at)
 
 - Unificar la autenticación (solo JWT o solo cookies) y mover el secreto a `.env`.
 - Añadir registro de usuarios en Angular.
-- Implementar la interacción de likes en el frontend.
+- Mostrar los errores de los likes en la interfaz, no solo en la consola.
 - Añadir un volumen de Docker para PostgreSQL.
 - Incorporar validaciones de entrada y manejo de errores centralizado.
 - Añadir tests para los endpoints principales.
+
+---
+
+## Cómo comprobar que funciona (capa por capa)
+
+Hay un README específico para cada capa con los pasos detallados. Esta es una guía rápida.
+
+### 1. Base de datos
+
+```bash
+docker ps --format "{{.Names}} {{.Status}}"
+docker exec bbdd psql -U usuario -d monolito -c "\dt"
+docker exec bbdd psql -U usuario -d monolito -c "SELECT (SELECT COUNT(*) FROM users) AS usuarios, (SELECT COUNT(*) FROM posts) AS posts, (SELECT COUNT(*) FROM comments) AS comentarios, (SELECT COUNT(*) FROM likes) AS likes;"
+```
+
+Esperado: contenedor `bbdd` arrancado, tablas `users`, `posts`, `comments` y `likes`, y datos de ejemplo (4/4/4/5 en una BD recién creada).
+
+Detalles: [bbdd/README.md](bbdd/README.md)
+
+### 2. Backend
+
+```bash
+cd backend
+node --check src/server.js
+npm start
+```
+
+Después, registrar un usuario y hacer login:
+
+```powershell
+$body = @{ username='prueba'; email='prueba@test.com'; password='123456' } | ConvertTo-Json
+Invoke-RestMethod -Uri http://localhost:3000/auth/register -Method Post -ContentType 'application/json' -Body $body
+$login = Invoke-RestMethod -Uri http://localhost:3000/auth/login -Method Post -ContentType 'application/json' -Body $body
+$token = $login.token
+$h = @{ Authorization = "Bearer $token" }
+Invoke-RestMethod -Uri http://localhost:3000/posts/feed -Headers $h
+Invoke-RestMethod -Uri http://localhost:3000/likes/switchLike/1 -Headers $h
+```
+
+Esperado: login devuelve `{ success: true, token }`, el feed devuelve `posts` y el like alterna entre `{"hasLiked":true,...}` y `{"hasLiked":false,...}`. Sin token, `/posts/feed` debe dar 401.
+
+Detalles: [backend/README.md](backend/README.md)
+
+### 3. Frontend
+
+```bash
+cd fronted
+npm run build
+npm start
+```
+
+Abre <http://localhost:4200>, entra con el usuario creado y comprueba en el navegador:
+
+| Acción | Resultado esperado |
+| --- | --- |
+| Login | Navega a `/home`; en Network, `/auth/login` y `/posts/feed` dan 200. |
+| Feed | Aparecen las publicaciones con imagen y comentarios. |
+| Corazón | Cambia a rojo y el contador sube/baja. |
+| Avión (`send`) | Publica el comentario. |
+| Papelera (`delete`) | Borra solo los comentarios propios. |
+
+Esperado: `npm run build` termina sin errores y no hay 401 en la consola.
+
+Detalles: [fronted/README.md](fronted/README.md)
+
+### 4. Prueba de extremo a extremo
+
+1. Registrar usuario → se inserta en `users` (comprobar con `psql`).
+2. Login en Angular → `localStorage.token` queda guardado.
+3. Feed → el backend consulta PostgreSQL y devuelve los posts.
+4. Like → se inserta/borra una fila en `likes` y el corazón cambia.
+5. Comentario → se inserta en `comments` y aparece en pantalla; borrarlo elimina la fila.
+
+Si algo falla, revisa los logs en orden: `docker logs frontend`, `docker logs backend`, `docker logs bbdd`.
+
