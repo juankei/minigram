@@ -1,0 +1,10 @@
+<div class="feed">
+  @if(restApiService.isloggedIn()){
+    <p>Welcome, {{ restApiService.getusername() }}!</p>
+  }
+  @for (post of posts; track post.id) {
+    <app-post [post]="post" (deleted)="onPostDeleted($event)"></app-post>
+  } @empty {
+    <p>No posts available.</p>
+  }
+</div>

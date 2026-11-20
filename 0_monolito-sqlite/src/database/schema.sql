@@ -28,9 +28,8 @@ CREATE TABLE IF NOT EXISTS comments (
 );
 
 CREATE TABLE IF NOT EXISTS likes (
-    post_id INTEGER NOT NULL REFERENCES posts (id),
-    user_id INTEGER NOT NULL REFERENCES users (id),
+    post_id INTEGER NOT NULL REFERENCES posts (id) ON DELETE CASCADE,
+    user_id INTEGER NOT NULL REFERENCES users (id) ON DELETE CASCADE,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (post_id, user_id)
-    UNIQUE(post_id, user_id)
-    )
+);

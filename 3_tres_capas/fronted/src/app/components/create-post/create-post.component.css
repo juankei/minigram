@@ -1,0 +1,42 @@
+:host {
+  display: block;
+  width: 470px;
+  max-width: 100%;
+  margin: 0 auto 24px;
+}
+
+.create-card {
+  border-radius: 16px;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.file-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.file-name {
+  font-size: 0.85rem;
+  color: #555;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.message {
+  margin: 12px 0 0;
+  font-size: 0.9rem;
+}
+
+.message--ok {
+  color: #1b7f3a;
+}
+
+.message--error {
+  color: #c62828;
+}

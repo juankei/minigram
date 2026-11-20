@@ -1,0 +1,150 @@
+:host {
+  display: block;
+  min-height: calc(100vh - 64px);
+}
+
+.login-page {
+  min-height: calc(100vh - 64px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  box-sizing: border-box;
+  background: #f0e5d3;
+}
+
+/* Tarjeta oscura */
+.login-card {
+  width: 100%;
+  max-width: 820px;
+  padding: 28px 32px;
+  border-radius: 20px;
+  box-sizing: border-box;
+  background: #4b3832;
+  color: #fff4e6;
+  box-shadow: 0 15px 40px rgba(67, 45, 35, 0.25);
+  border: 1px solid #6b5146;
+
+  /* Colores de los campos Material sobre fondo oscuro */
+  --mdc-outlined-text-field-input-text-color: #fff4e6;
+  --mdc-outlined-text-field-label-text-color: #e0cbb7;
+  --mdc-outlined-text-field-outline-color: #6b5146;
+  --mdc-outlined-text-field-hover-outline-color: #c47b55;
+  --mdc-outlined-text-field-focus-outline-color: #e8a77d;
+  --mdc-outlined-text-field-focus-label-text-color: #e8a77d;
+  --mdc-outlined-text-field-caret-color: #e8a77d;
+}
+
+/* Cabecera */
+mat-card-header {
+  margin-bottom: 24px;
+  justify-content: center;
+  text-align: center;
+}
+
+mat-card-title {
+  display: block;
+  margin-bottom: 10px;
+  color: #fff4e6;
+  font-size: 30px;
+  font-weight: 700;
+}
+
+mat-card-subtitle {
+  color: #e0cbb7;
+  font-size: 14px;
+}
+
+/* Formulario */
+.login-form {
+  display: block;
+}
+
+/* Campos y botón alineados en horizontal */
+.login-fields {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px;
+}
+
+.login-fields mat-form-field {
+  flex: 1 1 200px;
+  min-width: 170px;
+}
+
+/* Texto e iconos */
+mat-card mat-label {
+  color: #e0cbb7;
+}
+
+mat-card mat-icon {
+  color: #d6a17a;
+}
+
+/* Botón */
+.login-button {
+  flex: 0 0 auto;
+  min-width: 130px;
+  min-height: 52px;
+  padding: 0 24px;
+  border-radius: 10px;
+  background: #c47b55 !important;
+  color: #ffffff !important;
+  font-size: 16px;
+  font-weight: 600;
+  transition: background 0.2s, transform 0.2s;
+}
+
+.login-button:hover {
+  background: #a96343 !important;
+  transform: translateY(-2px);
+}
+
+/* Pie */
+mat-card-footer {
+  padding: 16px 20px 0;
+  text-align: center;
+}
+
+mat-card-footer p {
+  color: #e0cbb7;
+  font-size: 14px;
+}
+
+mat-card-footer a {
+  color: #e8a77d;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+mat-card-footer a:hover {
+  text-decoration: underline;
+}
+
+/* En pantallas medianas el formulario pasa a vertical */
+@media (max-width: 720px) {
+  .login-fields {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .login-fields mat-form-field,
+  .login-button {
+    width: 100%;
+    flex: 1 1 auto;
+  }
+}
+
+/* Móvil */
+@media (max-width: 480px) {
+  :host,
+  .login-page {
+    min-height: calc(100vh - 56px);
+  }
+
+  .login-card {
+    padding: 22px 18px;
+  }
+}

@@ -25,7 +25,7 @@ Es el punto de partida de la evolución del proyecto:
 
 ```
 0_monolito-sqlite/
-├── docker-compose.yml      # Usa la imagen preconstruida monolito:1
+├── docker-compose.yml      # Construye la imagen monolito:1 desde el Dockerfile
 ├── Dockerfile              # node:24 + npm ci
 ├── minigram.db             # Base de datos SQLite
 ├── minigram.db-wal / -shm  # Archivos auxiliares del modo WAL
@@ -69,7 +69,7 @@ res.cookie('username', username, { maxAge: 900000, httpOnly: true });
 
 `isAuth` solo comprueba que esa cookie exista; si no está, redirige a `/auth/login`. El resto de servicios leen `req.cookies.username` para saber quién actúa.
 
-Hay rutas `GET /login` y `GET /register` que renderizan las vistas EJS (a diferencia de la versión de tres capas, donde `GET /login` está comentado).
+Hay rutas `GET /login` y `GET /register` que renderizan las vistas EJS (al igual que en la versión de tres capas, donde `GET /auth/login` también está activo).
 
 ---
 
@@ -89,10 +89,10 @@ Abre <http://localhost:3000>.
 
 ### Con Docker
 
-El `docker-compose.yml` usa `image: monolito:1` (no construye la imagen). Si quieres usar tu código, constrúyela antes:
+El `docker-compose.yml` construye la imagen `monolito:1` desde el `Dockerfile` de esta carpeta. El contenedor ejecuta `npm run db-init` antes de arrancar, así que las tablas se crean solas (el `.dockerignore` excluye `minigram.db` del contexto):
 
 ```bash
-docker build -t monolito:1 .
+docker compose build
 docker compose up -d
 ```
 
@@ -178,5 +178,5 @@ node -e "const D=require('better-sqlite3'); const db=new D('minigram.db',{readon
 - Todo está acoplado en un único proceso: no hay separación de capas.
 - La sesión es solo una cookie con el nombre de usuario: cualquiera puede falsificarla y `isAuth` no valida su contenido.
 - `minigram.db` está dentro del proyecto: si se borra, se pierden los datos. Con Docker, el `docker-compose.yml` no define volumen.
-- `docker-compose.yml` usa una imagen preconstruida; los cambios de código requieren `docker build -t monolito:1 .`.
+- `docker-compose.yml` construye la imagen desde el `Dockerfile`; tras cambiar el código hay que repetir `docker compose build`.
 - En `schema.sql`, `likes` declara a la vez `PRIMARY KEY (post_id, user_id)` y `UNIQUE(post_id, user_id)`: es redundante.

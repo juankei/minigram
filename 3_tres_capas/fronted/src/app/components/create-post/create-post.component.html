@@ -1,0 +1,40 @@
+<mat-card class="create-card" appearance="outlined">
+  <mat-card-header>
+    <mat-card-title>Crear publicación</mat-card-title>
+  </mat-card-header>
+
+  <mat-card-content>
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Pie de foto</mat-label>
+      <textarea matInput rows="3"
+                [value]="caption()"
+                (input)="caption.set($any($event.target).value)"></textarea>
+    </mat-form-field>
+
+    <div class="file-row">
+      <input type="file"
+             accept="image/*"
+             aria-label="Imagen de la publicación"
+             (change)="onFileSelected($event)">
+      @if (image(); as file) {
+        <span class="file-name">{{ file.name }}</span>
+      }
+    </div>
+
+    @if (message()) {
+      <p class="message message--ok">{{ message() }}</p>
+    }
+    @if (error()) {
+      <p class="message message--error">{{ error() }}</p>
+    }
+  </mat-card-content>
+
+  <mat-card-actions>
+    <button mat-flat-button color="primary"
+            [disabled]="loading()"
+            (click)="submit()">
+      <mat-icon>publish</mat-icon>
+      {{ loading() ? 'Publicando...' : 'Publicar' }}
+    </button>
+  </mat-card-actions>
+</mat-card>

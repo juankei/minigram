@@ -1,0 +1,141 @@
+.comments-container {
+  padding: 12px 16px 16px;
+  border-top: 1px solid #eee;
+  margin-top: 12px;
+}
+
+.comments-container h3 {
+  margin: 0 0 12px;
+  font-size: 15px;
+  color: #4b3832;
+}
+
+/* Cada comentario: avatar a la izquierda y texto a la derecha */
+.comment {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 6px 0;
+}
+
+.comment-avatar {
+  display: block;
+  flex: 0 0 36px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.comment-avatar--fallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #c47b55;
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.comment-body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  padding-top: 2px;
+}
+
+.comment-body strong {
+  font-size: 13px;
+  color: #4b3832;
+}
+
+.comment-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.comment-delete {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: #b3261e;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.comment-delete mat-icon {
+  width: 18px;
+  height: 18px;
+  font-size: 18px;
+}
+
+.comment-delete:hover {
+  background: #fdecea;
+  color: #8c1d18;
+}
+
+.comment-body p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.4;
+  color: #333333;
+  overflow-wrap: anywhere;
+}
+
+/* Formulario para añadir comentarios */
+.comments-container form {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.comments-container form input {
+  flex: 1;
+  min-width: 0;
+  padding: 10px 12px;
+  border: 1px solid #dddddd;
+  border-radius: 8px;
+  font-size: 14px;
+  outline: none;
+}
+
+.comments-container form input:focus {
+  border-color: #c47b55;
+}
+
+.comments-container form button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 42px;
+  width: 42px;
+  height: 42px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: #c47b55;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.comments-container form button mat-icon {
+  width: 24px;
+  height: 24px;
+  font-size: 24px;
+}
+
+.comments-container form button:hover {
+  background: #f5e6dc;
+  color: #a96343;
+}

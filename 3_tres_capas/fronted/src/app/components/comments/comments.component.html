@@ -1,0 +1,65 @@
+<div class="comments-container">
+
+  <h3>Comments</h3>
+
+  @for (comment of comments; track comment.id) {
+    
+    <div class="comment">
+
+      @if (comment.avatar_filename) {
+        <img
+          class="comment-avatar"
+          [src]="apiUrl + comment.avatar_filename"
+          [alt]="comment.username"
+        />
+      } @else {
+        <div class="comment-avatar comment-avatar--fallback">
+          {{ comment.username.charAt(0).toUpperCase() }}
+        </div>
+      }
+
+      <div class="comment-body">
+        <div class="comment-header">
+          <strong>{{ comment.username }}</strong>
+          @if (isOwnComment(comment)) {
+            <button
+              type="button"
+              class="comment-delete"
+              (click)="deleteComment(comment.id)"
+              title="Eliminar comentario"
+              aria-label="Eliminar comentario"
+            >
+              <mat-icon>delete</mat-icon>
+            </button>
+          }
+        </div>
+        <p>{{ comment.comment }}</p>
+      </div>
+
+    </div>
+  } @empty {
+    <p>No comments yet.</p>
+  }
+
+  <form (ngSubmit)="addComment()">
+
+    <input
+      type="text"
+      name="newComment"
+      [(ngModel)]="newComment"
+      placeholder="Write a comment..."
+      required
+    >
+
+    <button
+      type="submit"
+      class="comment-submit"
+      title="Publicar comentario"
+      aria-label="Publicar comentario"
+    >
+      <mat-icon>send</mat-icon>
+    </button>
+
+  </form>
+
+</div>

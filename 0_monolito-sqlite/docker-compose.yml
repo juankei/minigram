@@ -1,8 +1,10 @@
 services:
 
   monolito:
+    build:
+      context: .
+      dockerfile: Dockerfile
     image: monolito:1
     container_name: monolito
     ports:
-    - "3000:3000"
-
+      - "3000:3000"

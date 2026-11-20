@@ -1,0 +1,23 @@
+<main>
+
+  <mat-toolbar>
+  <span>My App</span>
+
+  <span class="example-spacer"></span>
+
+  <a mat-button routerLink="/home">Home</a>
+
+@if (restApiService.isloggedIn()) {
+  <a mat-button routerLink="/crear-post">Crear post</a>
+  <a mat-button (click)="onLogout()">Logout</a>
+} @else {
+  <a mat-button routerLink="/login">Login</a>
+}
+</mat-toolbar>
+
+
+
+
+</main>
+
+<router-outlet></router-outlet>
