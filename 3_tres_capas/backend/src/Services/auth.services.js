@@ -9,6 +9,8 @@ export const logout = (req, res) => {
 };
 
 export const register = async (req, res) => {
+  const wantsJson = req.accepts(['json', 'html']) === 'json';
+
   try {
     const { username, email, password } = req.body;
 
@@ -18,6 +20,12 @@ export const register = async (req, res) => {
     );
 
     if (checkUser.rows.length > 0) {
+      if (wantsJson) {
+        return res.status(400).json({
+          success: false,
+          message: 'El usuario o email ya está en la base de datos'
+        });
+      }
       return res.status(400).send(
         'El usuario o email ya está en la base de datos'
       );
@@ -35,9 +43,22 @@ export const register = async (req, res) => {
       httpOnly: true
     });
 
-    res.send('Bien registrado');
+    if (wantsJson) {
+      return res.json({ success: true, username });
+    }
+
+    res.send(`
+      <p>Bien registrado</p>
+      <p><a href="/posts/feed">Ir al home</a> · <a href="/">Volver al inicio</a></p>
+    `);
   } catch (error) {
     console.error(error);
+    if (wantsJson) {
+      return res.status(500).json({
+        success: false,
+        message: 'Error al registrar el usuario'
+      });
+    }
     res.status(500).send('Error al registrar el usuario');
   }
 };

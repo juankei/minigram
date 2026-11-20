@@ -108,6 +108,27 @@ Credenciales de la base de datos definidas en `docker-compose.yml`:
 
 Al arrancar por primera vez, PostgreSQL ejecuta automáticamente `bbdd/schema.sql` y `bbdd/seed.sql`.
 
+---
+
+## Cómo iniciar sesión
+
+El login se hace **con el nombre de usuario, no con el correo**.
+
+| Usuario | Contraseña |
+|---|---|
+| `ana` | `123456` |
+| `carlos` | `123456` |
+| `lucia` | `123456` |
+| `miguel` | `123456` |
+
+1. Abre <http://localhost:4200> y pulsa **Login** en la barra superior.
+2. Escribe el usuario (por ejemplo `ana`) y la contraseña `123456`.
+3. Para crear otro usuario, pulsa **Register** en la barra superior o en el login: el formulario de registro está dentro de la SPA y pide `username`, `email` y `password`. Al terminar vuelve al login y entras con ese `username`.
+
+> El `email` del registro **no sirve para entrar**. El campo de usuario del login espera siempre el `username`.
+
+---
+
 Para detener los servicios:
 
 ```bash
@@ -284,16 +305,11 @@ users (id, username, email, password, avatar_filename, created_at)
 
 ## Notas y limitaciones conocidas
 
-- **Usuarios del seed sin contraseña válida**: `bbdd/seed.sql` inserta hashes de ejemplo (`$2b$10$HASH_ANA`, etc.), por lo que esos usuarios **no pueden iniciar sesión** hasta reemplazar el hash por uno real generado con bcrypt. Para generar uno:
+- **Usuarios del seed con contraseña de prueba**: `ana`, `carlos`, `lucia` y `miguel` tienen la contraseña **`123456`** (hash bcrypt real en `bbdd/seed.sql`). Puedes entrar con ellos directamente o registrar un usuario nuevo desde **Register** en la SPA.
 
-  ```bash
-  cd backend
-  node -e "const b=require('bcrypt'); b.hash('123456',10).then(console.log)"
-  ```
-
-- **Autenticación mixta**: el middleware `isAuth` valida el JWT; `getFeed`, los likes y los comentarios ya obtienen el usuario del token (con la cookie como respaldo), pero `createPost` y `deletePost` todavía leen el usuario de la cookie `username`, que el login de la API no establece. Para que esas operaciones funcionen correctamente conviene unificar ambos mecanismos.
+- **Autenticación**: el middleware `isAuth` valida el JWT; las rutas de posts, likes y comentarios obtienen el usuario del token. La cookie `username` se mantiene solo como respaldo para las vistas EJS.
 - **Secreto JWT en código**: el secreto está definido como `patata` en `backend/src/middlewares/auth.js`. En un entorno real debería moverse a una variable de entorno.
-- **Sin pantalla de registro en el frontend**: el backend expone `POST /auth/register`, pero la SPA solo incluye la vista de login.
+- **Registro en la SPA**: la vista `/register` llama a `POST /auth/register` y vuelve al login para obtener el JWT. El backend conserva su formulario EJS en `/auth/register`.
 - **Sin volumen persistente para PostgreSQL**: al eliminar el contenedor se pierden los datos.
 - **Flag de build obsoleto**: el `Dockerfile` del frontend usa `npm run build --prod`; en Angular 19 lo recomendado es `npm run build -- --configuration production`.
 - **Nombre de la carpeta `fronted`**: es un typo mantenido en las rutas del `Dockerfile`, `docker-compose.yml` y la configuración del proyecto.
@@ -303,7 +319,6 @@ users (id, username, email, password, avatar_filename, created_at)
 ## Posibles mejoras
 
 - Unificar la autenticación (solo JWT o solo cookies) y mover el secreto a `.env`.
-- Añadir registro de usuarios en Angular.
 - Mostrar los errores de los likes en la interfaz, no solo en la consola.
 - Añadir un volumen de Docker para PostgreSQL.
 - Incorporar validaciones de entrada y manejo de errores centralizado.

@@ -34,7 +34,10 @@ export const register = async (req, res) => {
       httpOnly: true
     });
 
-    res.send('Bien registrado');
+    res.send(`
+      <p>Bien registrado</p>
+      <p><a href="/posts/feed">Ir al home</a> · <a href="/">Volver al inicio</a></p>
+    `);
   } catch (error) {
     console.error(error);
     res.status(500).send('Error al registrar el usuario');
@@ -57,7 +60,10 @@ export const login = async (req, res) => {
         httpOnly: true
       });
 
-      return res.send('Logueado correctamente');
+      return res.send(`
+        <p>Logueado correctamente</p>
+        <p><a href="/posts/feed">Ir al home</a> · <a href="/">Volver al inicio</a></p>
+      `);
     }
 
     res.status(401).send('Credenciales incorrectas');

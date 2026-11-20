@@ -31,6 +31,13 @@ export class RestApiServiceService {
   );
 }
 
+register(username: string, email: string, password: string): Observable<any> {
+  return this.http.post<any>(
+    `${this.apiUrl}/auth/register`,
+    { username, email, password }
+  );
+}
+
 login(username: string, password: string): Observable<{ success: boolean }> {
 
   return this.http.post<any>(

@@ -1,0 +1,121 @@
+:host {
+  display: block;
+  min-height: calc(100vh - 64px);
+}
+
+.register-page {
+  min-height: calc(100vh - 64px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  box-sizing: border-box;
+  background: #f0e5d3;
+}
+
+.register-card {
+  width: 100%;
+  max-width: 480px;
+  padding: 28px 32px;
+  box-sizing: border-box;
+  border-radius: 20px;
+  background: #4b3832;
+  color: #fff4e6;
+  box-shadow: 0 15px 40px rgba(67, 45, 35, 0.25);
+  border: 1px solid #6b5146;
+
+  /* Colores Material sobre fondo oscuro */
+  --mdc-outlined-text-field-input-text-color: #fff4e6;
+  --mdc-outlined-text-field-label-text-color: #e0cbb7;
+  --mdc-outlined-text-field-outline-color: #6b5146;
+  --mdc-outlined-text-field-hover-outline-color: #c47b55;
+  --mdc-outlined-text-field-focus-outline-color: #e8a77d;
+  --mdc-outlined-text-field-focus-label-text-color: #e8a77d;
+  --mdc-outlined-text-field-caret-color: #e8a77d;
+}
+
+mat-card-header {
+  margin-bottom: 24px;
+  justify-content: center;
+  text-align: center;
+}
+
+mat-card-title {
+  display: block;
+  color: #fff4e6;
+  font-size: 28px;
+  font-weight: 700;
+}
+
+mat-card-subtitle {
+  color: #e0cbb7;
+  font-size: 14px;
+}
+
+.register-form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.register-card mat-icon {
+  color: #d6a17a;
+}
+
+.register-error {
+  margin: 4px 0 0;
+  color: #ffb4a8;
+  font-size: 0.9rem;
+}
+
+.register-button {
+  min-height: 52px;
+  margin-top: 12px;
+  border-radius: 10px;
+  background: #c47b55 !important;
+  color: #ffffff !important;
+  font-size: 16px;
+  font-weight: 600;
+  transition: background 0.2s, transform 0.2s;
+}
+
+.register-button:hover:not(:disabled) {
+  background: #a96343 !important;
+  transform: translateY(-2px);
+}
+
+mat-card-footer {
+  padding: 20px 0 0;
+  text-align: center;
+}
+
+mat-card-footer p {
+  margin: 0;
+  color: #e0cbb7;
+  font-size: 14px;
+}
+
+mat-card-footer a {
+  color: #e8a77d;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+mat-card-footer a:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 480px) {
+  :host,
+  .register-page {
+    min-height: calc(100vh - 56px);
+  }
+
+  .register-card {
+    padding: 22px 18px;
+  }
+}

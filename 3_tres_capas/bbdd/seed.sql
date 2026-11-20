@@ -1,9 +1,9 @@
 -- USUARIOS
 INSERT INTO users (username, email, password, avatar_filename) VALUES
-('ana', 'ana@test.com', '$2b$10$HASH_ANA', 'post1.jpg'),
-('carlos', 'carlos@test.com', '$2b$10$HASH_CARLOS', 'post1.jpg'),
-('lucia', 'lucia@test.com', '$2b$10$HASH_LUCIA', 'post1.jpg'),
-('miguel', 'miguel@test.com', '$2b$10$HASH_MIGUEL', 'post1.jpg')
+('ana', 'ana@test.com', '$2b$10$SCnMBQ5MrTuKFXgSny1mVuE1XZrzX72BpNvtLsINcCUsFGtRazokS', 'post1.jpg'),
+('carlos', 'carlos@test.com', '$2b$10$SCnMBQ5MrTuKFXgSny1mVuE1XZrzX72BpNvtLsINcCUsFGtRazokS', 'post1.jpg'),
+('lucia', 'lucia@test.com', '$2b$10$SCnMBQ5MrTuKFXgSny1mVuE1XZrzX72BpNvtLsINcCUsFGtRazokS', 'post1.jpg'),
+('miguel', 'miguel@test.com', '$2b$10$SCnMBQ5MrTuKFXgSny1mVuE1XZrzX72BpNvtLsINcCUsFGtRazokS', 'post1.jpg')
 ON CONFLICT DO NOTHING;
 
 -- POSTS
@@ -37,7 +37,3 @@ INSERT INTO likes (post_id, user_id) VALUES
   ((SELECT id FROM posts WHERE caption = 'Nuevo setup de trabajo'),
    (SELECT id FROM users WHERE username = 'lucia'))
 ON CONFLICT DO NOTHING;
-
-UPDATE users
-SET password = '$2b$10$TU_HASH_GENERADO'
-WHERE username IN ('ana', 'carlos', 'lucia', 'miguel');

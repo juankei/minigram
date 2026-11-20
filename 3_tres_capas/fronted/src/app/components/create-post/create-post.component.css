@@ -1,12 +1,44 @@
 :host {
   display: block;
-  width: 470px;
-  max-width: 100%;
-  margin: 0 auto 24px;
+  min-height: calc(100vh - 64px);
+  padding: 32px 16px;
+  box-sizing: border-box;
+  background: #f0e5d3;
 }
 
 .create-card {
-  border-radius: 16px;
+  width: 470px;
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 28px 32px;
+  box-sizing: border-box;
+  border-radius: 20px;
+  background: #4b3832;
+  color: #fff4e6;
+  box-shadow: 0 15px 40px rgba(67, 45, 35, 0.25);
+  border: 1px solid #6b5146;
+
+  /* Colores de los campos Material sobre fondo oscuro */
+  --mdc-outlined-text-field-input-text-color: #fff4e6;
+  --mdc-outlined-text-field-label-text-color: #e0cbb7;
+  --mdc-outlined-text-field-outline-color: #6b5146;
+  --mdc-outlined-text-field-hover-outline-color: #c47b55;
+  --mdc-outlined-text-field-focus-outline-color: #e8a77d;
+  --mdc-outlined-text-field-focus-label-text-color: #e8a77d;
+  --mdc-outlined-text-field-caret-color: #e8a77d;
+}
+
+mat-card-header {
+  justify-content: center;
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+mat-card-title {
+  display: block;
+  color: #fff4e6;
+  font-size: 26px;
+  font-weight: 700;
 }
 
 .full-width {
@@ -17,26 +49,83 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  margin-top: 8px;
+  margin-top: 16px;
+  padding: 14px 16px;
+  border: 1px dashed #6b5146;
+  border-radius: 12px;
+  background: rgba(255, 244, 230, 0.06);
+}
+
+.file-row input[type="file"] {
+  color: #fff4e6;
+  max-width: 100%;
+  font-size: 0.85rem;
+}
+
+.file-row input[type="file"]::file-selector-button {
+  padding: 8px 14px;
+  margin-right: 12px;
+  border: none;
+  border-radius: 8px;
+  background: #c47b55;
+  color: #ffffff;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.file-row input[type="file"]::file-selector-button:hover {
+  background: #a96343;
 }
 
 .file-name {
   font-size: 0.85rem;
-  color: #555;
+  color: #e0cbb7;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
 .message {
-  margin: 12px 0 0;
+  margin: 16px 0 0;
   font-size: 0.9rem;
 }
 
 .message--ok {
-  color: #1b7f3a;
+  color: #a8e6a3;
 }
 
 .message--error {
-  color: #c62828;
+  color: #ffb4a8;
+}
+
+mat-card-actions {
+  justify-content: center;
+  padding-top: 8px;
+}
+
+.publish-button {
+  min-width: 150px;
+  min-height: 48px;
+  border-radius: 10px;
+  background: #c47b55 !important;
+  color: #ffffff !important;
+  font-size: 16px;
+  font-weight: 600;
+  transition: background 0.2s, transform 0.2s;
+}
+
+.publish-button:hover:not(:disabled) {
+  background: #a96343 !important;
+  transform: translateY(-2px);
+}
+
+@media (max-width: 480px) {
+  :host {
+    padding: 20px 12px;
+  }
+
+  .create-card {
+    padding: 22px 18px;
+  }
 }

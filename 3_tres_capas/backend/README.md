@@ -189,7 +189,7 @@ Abre <http://localhost:3000/>: debe cargar la página EJS. Si el backend no pued
 
 ### 3. Prueba de la API (PowerShell)
 
-Los usuarios del `seed.sql` tienen hashes falsos, así que conviene crear uno nuevo.
+Puedes entrar con los usuarios del `seed.sql` (`ana`, `carlos`, `lucia` o `miguel`) y contraseña `123456`, o crear uno nuevo con el formulario/registro de abajo. El login usa siempre el **username**, no el email.
 
 **Registrar un usuario:**
 
@@ -258,8 +258,8 @@ docker logs backend --tail 50
 
 ## Limitaciones conocidas
 
-- `GET /auth/login` está comentado: al abrirlo en el navegador sale `Cannot GET /auth/login`.
+- `GET /auth/login` está activo y renderiza el formulario EJS; la SPA se usa desde <http://localhost:4200> pulsando **Login**.
 - El secreto JWT (`patata`) está en el código; en producción debe ir en una variable de entorno.
-- Autenticación mixta: `getFeed`, likes y comentarios leen `req.username` del JWT, pero `createPost` y `deletePost` siguen leyendo la cookie `username`, que el login de la API no establece.
-- `GET /auth/logout` redirige a `/auth/login`, que actualmente no existe como `GET`.
-- Las contraseñas del seed son marcadores de posición y no permiten entrar.
+- Autenticación: `isAuth`, posts, likes y comentarios leen `req.username` del JWT; la cookie `username` se mantiene solo para las vistas EJS.
+- `GET /auth/logout` borra la cookie y redirige a `/auth/login`, que sí existe como `GET`.
+- Los usuarios del seed (`ana`, `carlos`, `lucia`, `miguel`) tienen la contraseña `123456`.

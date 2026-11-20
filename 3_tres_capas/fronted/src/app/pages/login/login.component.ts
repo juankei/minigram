@@ -5,7 +5,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { RestApiServiceService } from '../../services/rest-api.service.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -14,7 +14,8 @@ import { ActivatedRoute, Router } from '@angular/router';
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
-    MatIconModule
+    MatIconModule,
+    RouterLink
   ],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']

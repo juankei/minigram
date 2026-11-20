@@ -51,7 +51,9 @@ Definidas en `src/app/app.routes.ts`:
 | Ruta | Vista | Descripción |
 | --- | --- | --- |
 | `/login` | `LoginComponent` | Formulario de usuario y contraseña. Es la ruta por defecto. |
+| `/register` | `RegisterComponent` | Formulario de registro dentro de la SPA. |
 | `/home` | `HomeComponent` | Feed con las publicaciones. |
+| `/crear-post` | `CreatePostComponent` | Formulario para publicar una imagen. |
 | `''` | redirect | Redirige a `/login`. |
 | `**` | redirect | Cualquier ruta desconocida vuelve a `/login`. |
 
@@ -70,11 +72,14 @@ Métodos disponibles en el servicio:
 | Método del servicio | Petición HTTP | Uso |
 | --- | --- | --- |
 | `login(username, password)` | `POST /auth/login` | Guarda el JWT en `localStorage`. |
+| `register(username, email, password)` | `POST /auth/register` | Crea un usuario y vuelve al login. |
 | `listPosts()` | `GET /posts/feed` | Carga las publicaciones. |
 | `getComments(postId)` | `GET /comments/list/:postId` | Carga los comentarios de un post. |
 | `createComment(postId, comment)` | `POST /comments/create/:postId` | Publica un comentario. |
 | `deleteComment(commentId)` | `DELETE /comments/delete/:commentId` | Borra un comentario propio. |
 | `switchLike(postId)` | `GET /likes/switchLike/:postId` | Alterna el like y devuelve el contador. |
+| `createPost(caption, image)` | `POST /posts/create-post` | Publica una imagen con JWT. |
+| `deletePost(postId)` | `GET /posts/delete-post/:id` | Borra un post propio. |
 | `logout()` | — | Borra `token` y `username` de `localStorage`. |
 
 ### Autenticación
@@ -146,7 +151,7 @@ Abre <http://localhost:4200>. Debes ver la pantalla de login con los campos de u
 
 ### 3. Prueba funcional en el navegador
 
-Necesitas un usuario con contraseña válida. Si los del `seed.sql` no funcionan, crea uno con la API (ver [el README del backend](../backend/README.md#cómo-comprobar-que-esta-capa-funciona)).
+Usa un usuario del `seed.sql`: **`ana`**, **`carlos`**, **`lucia`** o **`miguel`**, todos con contraseña **`123456`**. El login es con el **usuario**, no con el correo. Para crear otro, pulsa **Register** en la SPA y entra después con ese `username`.
 
 | Acción | Resultado esperado |
 | --- | --- |
@@ -164,13 +169,13 @@ Necesitas un usuario con contraseña válida. Si los del `seed.sql` no funcionan
 | `401 Unauthorized` en el feed o en los likes | No hay token, caducó (1 hora) o no se envió la cabecera. Vuelve a hacer login. |
 | Error de conexión / `ERR_CONNECTION_REFUSED` | El backend no está levantado en `:3000`. |
 | Los iconos salen como texto (`send`, `delete`, `favorite`) | Falta la hoja de `Material Icons` en `src/index.html`. |
-| `Cannot GET /auth/login` | Estás abriendo la URL del backend en el navegador. Usa `http://localhost:4200/login`. |
+| `Cannot GET /auth/login` | Estás abriendo la URL del backend en el navegador. Entra por <http://localhost:4200> y pulsa **Login** en el menú. |
 | `404` de `com.chrome.devtools.json` | Ruido de Chrome DevTools en `localhost`, no afecta a la app. |
 
 ---
 
 ## Limitaciones
 
-- No hay pantalla de registro en la SPA: hay que registrar usuarios desde la API.
+- El registro se hace en la SPA (`/register`); al terminar vuelve a `/login`. El backend sigue teniendo su formulario EJS en `/auth/register` para quien lo abra directamente.
 - La URL del backend está fijada en el código; para otro entorno habría que usar una variable de configuración.
 - No hay guardas de ruta: `/home` es accesible aunque no haya token, aunque las peticiones fallarán con 401.

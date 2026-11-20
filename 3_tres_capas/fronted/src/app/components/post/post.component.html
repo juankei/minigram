@@ -31,7 +31,6 @@
         <mat-icon>{{ hasLiked() ? 'favorite' : 'favorite_border' }}</mat-icon>
         <span class="like-count">{{ likes() }}</span>
       </button>
-      <button matButton class="post-share">SHARE</button>
 
       @if (isOwnPost(p)) {
         <button

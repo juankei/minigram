@@ -154,14 +154,7 @@ Se recrea el contenedor, se vuelven a ejecutar `schema.sql` y `seed.sql` y se pi
 
 ## Limitaciones conocidas
 
-- Los hashes del `seed.sql` (`$2b$10$HASH_ANA`, etc.) son marcadores de posición, no contraseñas reales. `seed.sql` además los sobreescribe al final con `$2b$10$TU_HASH_GENERADO`. Para poder entrar con esos usuarios hay que generar un hash real:
-
-  ```bash
-  cd backend
-  node -e "const b=require('bcrypt'); b.hash('123456',10).then(console.log)"
-  ```
-
-  Y sustituir el valor en `UPDATE users SET password = ...`.
+- Los usuarios del `seed.sql` (`ana`, `carlos`, `lucia` y `miguel`) tienen la contraseña **`123456`**. El hash bcrypt está escrito directamente en los `INSERT` y ya no hay un `UPDATE` final que lo sobrescriba.
 
 - El contenedor no tiene volumen persistente.
 - No hay migraciones: `schema.sql` usa `CREATE TABLE IF NOT EXISTS` y no actualiza tablas ya existentes.
